@@ -2,60 +2,47 @@ package edu.htc.tictactoe;
 
 import java.util.Scanner;
 
-//import edu.htc.tictactoe.Player.*;
+import edu.htc.tictactoe.Player.*;
 
 
 
 public class TicTacToe {
+
   // public GameBoard gb = new GameBoard();
   //public Player pOne = new Player();
   //public Player pTwo = new Player();
   // public int intOpnSpots = 9;
   //public boolean blnExit;
-  Player pOne;
-  Player pTwo;
+  private Player pOne;
+  private Player pTwo;
 
-  GameBoard game;
+  private GameBoard gb;
   Scanner scan = new Scanner(System.in);
 
-  char[] currentBoard = new char[9];
+  //char[] currentBoard = new char[9];
 
   public TicTacToe() {
-    game = new GameBoard();
+    gb = new GameBoard();
   }
-//  public TicTacToe(Player pOne, Player pTwo)
-  //{
-  //  this.pOne = pOne;
-  //   this.pTwo = pTwo;
-  // }
 
   public void playGame() {
-    int x = 0;
-    int p1Move = 0;
-    boolean Openspace = false, rndComplete = false;
-    int gameCounter = 0;
-    int nDraws = 0;
-    boolean blnGameWon;
-    int nMove;
-
-    //GameBoard gb = new GameBoard();
+    //gb = new GameBoard();
     System.out.println("Welcome to Tic-Tac-Toe, lets play a game!");
-    System.out.print("Player 1: ");
-    String pName1 = scan.next();
-    char gMark1 = 'X';
-    pOne = new Player(pName1, gMark1);
+    Player pOne = new Player("Player 1", 'X');
+    System.out.println("Let's start with the first player!");
+    System.out.println("Name: " + pOne.getName());
+    System.out.println("Cursor: " + pOne.getMarker());
+    Player pTwo = new Player("Player 2", 'O');
+    System.out.println("Now let's start the second player!");
+    System.out.println("Name: " + pTwo.getName());
+    System.out.println("Cursor: " + pTwo.getMarker());
+    
 
-    System.out.println("Player 2: ");
-    String pName2 = scan.next();
-    char gMark2 = '0';
-    pTwo = new Player(pName2, gMark2);
+  }
+  public static void main(String[] args){
+    TicTacToe tic = new TicTacToe();
 
-    // if (pOne == null) {
-    //   pOne =
-
-    //    game = new GameBoard();
-    //   }
-
+    tic.playGame();
   }
 }
 
