@@ -8,13 +8,6 @@ public class Player {
     private String pName;
     private char pMarker;
 
-  //  public Player(String name, char marker) {
-   //     this.pName = name;
-   //     this.pMarker = marker;
-
-
-  //  }
-
     public static void main(String[] args) {
         System.out.println("Player 1 is named, and set to X as it's marker");
         Player pOne = new Player("Player 1", 'X');
@@ -44,12 +37,8 @@ public class Player {
         System.out.println("End test for player 2");
     }
 
-   // Player(){
-    //    pName = "Player";
-    //    pMarker = 'X';
-   // }
 
-    Player(String nam, char cur){
+    public Player(String nam, char cur){
         pName = nam;
         pMarker = cur;
 
@@ -74,7 +63,7 @@ public class Player {
 
     public int getMove() {
         String playerInput;
-        int playerOutput = 0;
+        int playerOutput;
         Scanner scan = new Scanner(System.in);
 
         while (true) {

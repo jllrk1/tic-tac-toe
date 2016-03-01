@@ -41,13 +41,14 @@ public class GameBoard {
             testGameBoardDisplay();
             testIsSquareOpen();
             testBoardInteractions();
-
+            System.out.println("___-**-___-**-___-**-___-**-___");
+            System.out.println("End of testing the game board!");
 
         }
 
         public static void testIsSquareOpen() {
             System.out.println();
-            System.out.println("____****____****____****____");
+            System.out.println("___-**-___-**-___-**-___-**-___");
             System.out.println("Testing is square open method");
             GameBoard gbTest = new GameBoard();
             gbTest.display();
@@ -88,14 +89,14 @@ public class GameBoard {
         public static void testGameBoardDisplay() {
 
             System.out.println();
-            System.out.println("*****_____*****_____*****");
+            System.out.println("___-**-___-**-___-**-___-**-___");
             System.out.println("Testing board display");
             GameBoard gbTest = new GameBoard();
 
             System.out.println("testing empty board display");
             gbTest.display();
 
-            System.out.println("Testing display of board after adding ) in the top right, X in center and X in bottom left.");
+            System.out.println("Testing display of board after adding.");
             gbTest.updateSquare(6, 'X');
             gbTest.updateSquare(3, 'O');
             gbTest.updateSquare(8, 'X');
@@ -107,7 +108,7 @@ public class GameBoard {
         }
         public static void testBoardInteractions(){
             System.out.println();
-            System.out.println("*****_____*****_____*****");
+            System.out.println("___-**-___-**-___-**-___-**-___");
             System.out.println("Testing board interactions such as getting square value, adding win, and getting open squares ");
             char[] brdWinTest = new char[]{'X', 'X', 'X', '4', 'O', '6', '7', 'O', '9'};
             GameBoard gbTest = new GameBoard(brdWinTest);
@@ -128,17 +129,17 @@ public class GameBoard {
                 System.out.println("Game not won, keep on playing!");
             }
             System.out.println();
-            System.out.println("____****____****____****____");
+            System.out.println("___-**-___-**-___-**-___-**-___");
             System.out.println("Now we shall test the getting open squares method, as well as the get Square value");
 
                     int[] TestSqrs1 = gbTest2.getOpenSquares();
                     for (int i = 0; i<TestSqrs1.length; i++){
                             System.out.println(TestSqrs1[i]);
                         }
-                    System.out.println("What is the value of square 5: " + gbTest.getSquareValue(4));
-                    System.out.println("What is the value of square 7: " + gbTest.getSquareValue(6));
+                    System.out.println("What is the value of square 4: " + gbTest.getSquareValue(4));
+                    System.out.println("What is the value of square 6: " + gbTest.getSquareValue(6));
             System.out.println("End of Testing board interactions");
-            System.out.println("____****____****____****____");
+            System.out.println("___-**-___-**-___-**-___-**-___");
 
         }
 
@@ -171,8 +172,6 @@ public class GameBoard {
 
         public boolean isGameWon() {
 
-            //boolean gameWon = false;
-            //boolean Winner = false;
 
             for (int[] win : winCombinations) {
                 char spt1 = chBoard[win[0]-1];
