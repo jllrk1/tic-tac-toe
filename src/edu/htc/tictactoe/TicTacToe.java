@@ -2,60 +2,174 @@ package edu.htc.tictactoe;
 
 import java.util.Scanner;
 
-import edu.htc.tictactoe.Player.*;
-
 
 
 public class TicTacToe {
 
-  // public GameBoard gb = new GameBoard();
-  //public Player pOne = new Player();
-  //public Player pTwo = new Player();
-  // public int intOpnSpots = 9;
-  //public boolean blnExit;
   private Player pOne;
   private Player pTwo;
+  private boolean pOneActive;
+  private boolean pTwoActive;
+  private boolean gTie;
+ // private boolean endGame;
+  private String Again;
 
   private GameBoard gb;
-  Scanner scan = new Scanner(System.in);
+  private Scanner scan = new Scanner(System.in);
 
-  //char[] currentBoard = new char[9];
+
 
   public TicTacToe() {
-    gb = new GameBoard();
+    this.gb = new GameBoard();
   }
 
+
   public void playGame() {
-    //gb = new GameBoard();
+
     System.out.println("___-**-___-**-___-**-___-**-___");
     System.out.println("Welcome to Tic-Tac-Toe, lets play a game!");
-    Player pOne = new Player("Player 1", 'X');
+    pOne = new Player("Player 1", 'X');
     System.out.println("Let's start with the first player!");
     System.out.println("Name: " + pOne.getName());
     System.out.println("Cursor: " + pOne.getMarker());
-    Player pTwo = new Player("Player 2", 'O');
-    System.out.println("Now let's start the second player!");
+    pTwo = new Player("Player 2", 'O');
+    System.out.println("Now the second player!");
     System.out.println("Name: " + pTwo.getName());
     System.out.println("Cursor: " + pTwo.getMarker());
-    System.out.println("Here is the game board: ");
-    //do{
+    do {
 
-    //while
-  //}
-    gb.display();
-    System.out.println("Player 1, you will be going first ");
-    int pMove = pOne.getMove();
-    gb.updateSquare(pMove, pOne.getMarker());
-    gb.display();
-    System.out.println("This is all I have done so far, please check out the gameboard and player classes as they actually work!");
+
+      System.out.println("Player 1, you will be going first ");
+      System.out.println("Here is the game board: ");
+      gb.display();
+      System.out.println("___-**-___-**-___-**-___-**-___");
+      gTie = false;
+      do {
+        pOneActive = true;
+        pTwoActive = false;
+        //gTie = false;
+        while (pOneActive && !pTwoActive) //This is player 1's move
+        {
+          System.out.println("___-**-___-**-___-**-___-**-___");
+          System.out.println(pOne.getName() + " it is your turn");
+          int pMove = pOne.getMove();
+          if (!gb.isSquareOpen(pMove)) {
+            System.out.println("Oops, that spot is already taken, here are the available spots: ");
+            int Osqr[] = gb.getOpenSquares();
+            // int Open = Osqr.length;
+            for (int i = 0; i < Osqr.length; i++) {
+              System.out.println(Osqr[i]);
+            }
+            pMove = pOne.getMove();
+          }
+          System.out.println("You have chosen " + pMove);
+          gb.updateSquare(pMove, pOne.getMarker());
+          gb.display();
+          if (gb.isGameWon()) {
+            pOneActive = true;
+            pTwoActive = false;
+            //  gTie = false;
+            break;
+          } else if (!gb.isGameWon()) {
+            int CheckDraw[] = gb.getOpenSquares();
+            int Open = CheckDraw.length;
+            if (Open < 1) {
+              System.out.println("Looks like the game is a tie! ");
+              gTie = true;
+              pTwoActive = false;
+              pOneActive = false;
+              break;
+            } else {
+              pTwoActive = true;
+              pOneActive = false;
+            }
+
+            System.out.println("___-**-___-**-___-**-___-**-___");
+          }
+          System.out.println("___-**-___-**-___-**-___-**-___");
+        }
+        while (pTwoActive && !pOneActive) //This is player 2's move
+        {
+          System.out.println("___-**-___-**-___-**-___-**-___");
+          System.out.println(pTwo.getName() + " it is your turn");
+          int pMove = pTwo.getMove();
+          if (!gb.isSquareOpen(pMove)) {
+            System.out.println("Oops, that spot is already taken, here are the available spots: ");
+            int Osqr[] = gb.getOpenSquares();
+            for (int i = 0; i < Osqr.length; i++) {
+              System.out.println(Osqr[i]);
+            }
+            pMove = pTwo.getMove();
+          }
+          System.out.println("You have chosen " + pMove);
+          gb.updateSquare(pMove, pTwo.getMarker());
+          gb.display();
+          if (gb.isGameWon()) {
+            pOneActive = false;
+            pTwoActive = true;
+            break;
+          } else if (!gb.isGameWon()) {
+            int CheckDraw[] = gb.getOpenSquares();
+            int Open = CheckDraw.length;
+            if (Open < 1) {
+              System.out.println("Looks like the game is a tie! ");
+              gTie = true;
+              pTwoActive = false;
+              pOneActive = false;
+              break;
+            } else {
+              pTwoActive = false;
+              pOneActive = true;
+            }
+            System.out.println("___-**-___-**-___-**-___-**-___");
+          }
+          
+          System.out.println("___-**-___-**-___-**-___-**-___");
+
+        }
+
+        if (gTie) {
+          break;
+        }
+      } while (gb.isGameWon() == false);
+      if (pOneActive && !pTwoActive) {
+
+        System.out.println("Game over " + pOne.getName() + " is the winner");
+        pOne.addWin();
+        //pOne.getWinCount();
+        System.out.println(pOne.getName() + " has " + pOne.getWinCount() + "win(s)");
+      } else if (!pOneActive && pTwoActive) {
+        System.out.println("Game over " + pTwo.getName() + " is the winner");
+        pTwo.addWin();
+        System.out.println(pTwo.getName() + " has " + pTwo.getWinCount() + " win(s)");
+      } else if (!pOneActive && !pTwoActive) {
+        System.out.println("The game is a draw");
+      }
+      System.out.println("Another Game? Please choose Yes, or No ");
+      Again = scan.next();
+      gb.reset();
+    }
+      while (Again.equalsIgnoreCase("yes"));
+
+    System.out.println("Game over, the final win counts are" + pOne.getName() + " has " + pOne.getWinCount() + " win(s) " + pTwo.getName() + " has" + pTwo.getWinCount() + " play again soon!");
 
   }
-  public static void main(String[] args){
-    TicTacToe tic = new TicTacToe();
 
+
+  public static void main(String[] args) {
+    TicTacToe tic = new TicTacToe();
     tic.playGame();
+    //do{
+    //   tic.playGame();
+    // }while (!isgameWon());{
+
+    //  }
+
   }
 }
+
+
+
 
 
 

@@ -24,7 +24,7 @@ public class GameBoard {
     public GameBoard(char[] board) {
         this.chBoard = board;
         openSquares = new ArrayList();
-        for (int i = 0; i < board.length; i++){
+        for (int i = 1; i < board.length; i++){
             char c = board[i];
             if (c != 'X' && c != 'O') {
                 openSquares.add(i + 1);
@@ -55,7 +55,7 @@ public class GameBoard {
 
             System.out.println("Testing with an empty board, AKA, ALL squares should be open.");
             boolean error = false;
-            for (int i = 1; i <= 9; i++) {
+            for (int i = 0; i <= 9; i++) {
                 if (gbTest.isSquareOpen(i) == false) {
                     error = true;
                     System.out.println("Error. Square " + i + "is NOT open but should be!");
@@ -157,11 +157,12 @@ public class GameBoard {
 
          public boolean isSquareOpen(int brdSpot) {
 
+
            return openSquares.contains(brdSpot);
          }
 
         public void updateSquare(int bSpot, char pCurs) {
-            chBoard[bSpot] = pCurs;
+            chBoard[bSpot-1] = pCurs;
             openSquares.remove(new Integer(bSpot));
         }
 
@@ -195,6 +196,17 @@ public class GameBoard {
     }
     public char getSquareValue(int x) {
         return chBoard[x-1];
+    }
+
+    public void reset() {
+        int oSqr;
+        chBoard = new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+        openSquares = new ArrayList<Integer>(9);
+        for (oSqr = 1; oSqr < 10; oSqr++) {
+            openSquares.add(oSqr);
+        }
+
     }
 
 
