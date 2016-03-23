@@ -20,7 +20,8 @@ public abstract class TicTacToeStrategy {
 
        testGetRandomMove();
        testBestOpenMove();
-       testBlockWinStrategy ();
+       testBlockWinStrategy();
+       testGoforWin();
    }
 
    public static void testGetRandomMove (){
@@ -105,8 +106,8 @@ public abstract class TicTacToeStrategy {
     public static void testBlockWinStrategy (){
         System.out.println();
         System.out.println("___-**-___-**-___-**-___-**-___");
-        System.out.println("Testing BestOpenMove method");
-        GameBoard gbTest = new GameBoard(new char[]{'1', '2', 'X', 'X', '0', '6', '0', '8', 'X'});
+        System.out.println("Testing Blockwin method");
+        GameBoard gbTest = new GameBoard(new char[]{'1', '2', 'X', 'X', 'O', '6', 'O', '8', 'X'});
 
         gbTest.display();
         TicTacToeStrategy BlockWinStrat = new TicTacToeStrategy(gbTest) {
@@ -141,41 +142,75 @@ public abstract class TicTacToeStrategy {
         System.out.println("___-**-___-**-___-**-___-**-___");
         System.out.println();
     }
+    public static void testGoforWin(){
+        System.out.println();
+        System.out.println("___-**-___-**-___-**-___-**-___");
+        System.out.println("Testing Goforwin method");
+        GameBoard gbTest = new GameBoard(new char[]{'1', '2', 'X', 'X', 'O', '6', 'O', '8', 'X'});
+
+        gbTest.display();
+        TicTacToeStrategy GoForWinStrat = new TicTacToeStrategy(gbTest) {
+
+            public int getBestMove(){
+                return 0;
+            }
+
+        };
+
+        Player TestCPU = new ComputerPlayer("Test CPU", 'O', GoForWinStrat);
+        System.out.println("Player " + TestCPU.getName());
+        System.out.println("Result is ");
+        boolean error = false;
+        int numberOfRuns = 50;
+        do {
+
+
+            for (int i = 0; i < numberOfRuns; i++) {
+
+                int result = GoForWinStrat.goForWin();
+                if (result < 1 || result > 9) {
+                    error = true;
+                    System.out.println("Error! This result of " + result + " is out of range, it must be 1-9");
+                } else if (gbTest.isSquareOpen(result) == false) {
+                    error = true;
+                    System.out.println("Error! That spot " + result + " is not open!");
+                }
+            }
+        }while (error);
+        System.out.println("No bad output was found in " + numberOfRuns + " tries.");
+        System.out.println("___-**-___-**-___-**-___-**-___");
+        System.out.println();
+    }
 
 
 
     public abstract int getBestMove();
 
-   // public int blockSpot = 1;
     protected int getBlockWin() {
         char CPU = 'O';
-
-       //char [] chBoard = new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9'};
         int bestMove = 0;
 
         for (int i = 0; i < winCombinations.length; i ++) {
             int[] win = (winCombinations[i]);
-
-
-          //  for (int[] win : winCombinations) {
                 char spt1 = gb.getSquareValue(win[0]);
                 char spt2 = gb.getSquareValue(win[1]);
                 char spt3 = gb.getSquareValue(win[2]);
-                if (spt1 == spt2 || spt1 == spt3 || spt2 == spt3) {
                     if (spt1 == CPU || spt2 == CPU || spt3 == CPU) {
 
                         if (spt1 == spt2 && gb.isSquareOpen(spt3)) {
                             bestMove = spt3;
+                            break;
                         } else if (spt2 == spt3 && gb.isSquareOpen(spt1)) {
                             bestMove = spt1;
+                            break;
                         } else if (spt3 == spt1 && gb.isSquareOpen(spt2)) {
-                            bestMove = (spt2);
+                            bestMove = spt2;
+                            break;
                         } else {
                             bestMove = getBestOpenMove();
                         }
                     }
-                }
-            }
+        }
 
         return bestMove;
     }
@@ -185,6 +220,36 @@ public abstract class TicTacToeStrategy {
         int[] ranOpenSpot = gb.getOpenSquares();
         int ranMove = rand.nextInt(ranOpenSpot.length);
         return ranOpenSpot[ranMove];
+    }
+
+    protected int goForWin(){
+        char HumanPlayer = 'X';
+        int gfWin = 0;
+        int winCombinations[][] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {1, 5, 9}, {3, 5, 7}, {1, 4, 7}, {2, 5, 8}, {3, 6, 9}};
+                for (int[] win : winCombinations) {
+                        char spt1 = gb.getSquareValue(win[0]);
+                        char spt2 = gb.getSquareValue(win[1]);
+                        char spt3 = gb.getSquareValue(win[2]);
+                        if (spt1 == HumanPlayer) {
+                                if (spt1 == spt2 && gb.isSquareOpen(spt3)) {
+                                        gfWin = spt3;
+                                        break;
+                                    } else if (spt1 == spt3 && gb.isSquareOpen(spt2)) {
+                                        gfWin = spt2;
+                                        break;
+                                    }
+                            }else if (spt2 == HumanPlayer){
+                               if (spt2 == spt3 && gb.isSquareOpen(spt1)) {
+                                        gfWin = spt1;
+                                        break;
+                                    }
+                            }
+                    }
+                if (gfWin == 0){
+                        gfWin = getBlockWin();
+                    }
+
+        return gfWin;
     }
 
     protected int getBestOpenMove() {

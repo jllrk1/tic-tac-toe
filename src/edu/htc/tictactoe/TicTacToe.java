@@ -1,7 +1,6 @@
 package edu.htc.tictactoe;
 
-import edu.htc.tictactoe.Strategy.RandomMoveStrategy;
-import edu.htc.tictactoe.Strategy.TicTacToeStrategy;
+import edu.htc.tictactoe.Strategy.*;
 import edu.htc.tictactoe.player.ComputerPlayer;
 import edu.htc.tictactoe.player.HumanPlayer;
 import edu.htc.tictactoe.player.Player;
@@ -22,6 +21,7 @@ public class TicTacToe {
   private boolean singlePlay;
   private boolean bError;
   private boolean gFrstErr;
+  private boolean stratSet;
   private String Again;
   private String goFirst;
   private GameBoard gb;
@@ -256,15 +256,21 @@ public class TicTacToe {
           System.out.println("Name: " + pOne.getName());
           System.out.println("Cursor: " + pOne.getMarker());
           System.out.println("Now the Computer Player!");
-          System.out.println("How good would you like the Computer Player to be? " + cpuDifficulty()); //this method will ask the player how difficult they want it to be, and it will return which strategy the CPU should use.
+          System.out.println("How good would you like the Computer Player to be? ");
+          System.out.println("___-**-___-**-___-**-___-**-___");
+          cpuDifficulty(); //this method will ask the player how difficult they want it to be, and it will return which strategy the CPU should use.
+          setStrategy();
+          stratSet = true;
+          System.out.println("___-**-___-**-___-**-___-**-___");
+          System.out.println("Let's start the game! ");
+          System.out.println("___-**-___-**-___-**-___-**-___");
+        } while (!stratSet);
+          do {
 
           System.out.println("___-**-___-**-___-**-___-**-___");
-          pCPU = new ComputerPlayer("CPU", 'O', new RandomMoveStrategy(gb));
-
           System.out.println("Name: " + pCPU.getName());
           System.out.println("Cursor: " + pCPU.getMarker());
           System.out.println("___-**-___-**-___-**-___-**-___");
-          System.out.println("Let's start the game! ");
           System.out.println("Here is the game board: ");
           gb.display();
           System.out.println("___-**-___-**-___-**-___-**-___");
@@ -374,12 +380,77 @@ public class TicTacToe {
 
   }
 
-  public int cpuDifficulty (){
-    System.out.println("There are 4 different difficulty modes");
-    System.out.println("Level 1 is the easiest, up through level 4, which is the most difficult");
-    //use scan to ask player which level, use that to return the difficulty level, then use that to set a strategy to the CPU.
+
+
+  public int cpuDifficulty(){
+    //bError = true;
+    do {
+
+      System.out.println("There are 4 different difficulty modes");
+      System.out.println("Level 1 is the easiest, up through level 4, which is the most difficult");
+      //use scan to ask player which level, use that to return the difficulty level, then use that to set a strategy to the CPU.
+      int uInput = scan.nextInt();
+      if (uInput == 1) {
+        System.out.println("You have chosen level 1");
+        cpuLevel = 1;
+        bError = false;
+      } else if (uInput == 2) {
+        System.out.println("You have chosen level 2");
+        cpuLevel = 2;
+        bError = false;
+      } else if (uInput == 3) {
+        System.out.println("You have chosen level 3");
+        cpuLevel = 3;
+        bError = false;
+      } else if (uInput == 4) {
+        System.out.println("You have chosen level 4");
+        cpuLevel = 4;
+        bError = false;
+      } else {
+        System.out.println("Random Error occurred, level not selected");
+        bError = true;
+      }
+
+    } while (bError);
     return cpuLevel;
   }
+
+  private void setStrategy() {
+    if (cpuLevel == 1) {
+       pCPU = new ComputerPlayer("CPU", 'O', new RandomMoveStrategy(gb));
+    } else if (cpuLevel == 2) {
+      pCPU = new ComputerPlayer("CPU", 'O', new BestOpenMoveStrategy(gb) {
+        @Override
+        public int getBestMove() {
+          return super.getBestMove();
+        }
+      });
+
+    } else if (cpuLevel == 3) {
+      pCPU = new ComputerPlayer("CPU", 'O', new BlockWinStrategy(gb));
+    } else if (cpuLevel == 4) {
+      pCPU = new ComputerPlayer("CPU", 'O', new GoForWinStrategy(gb));
+    }
+  }
+
+  //public void setStrategy(TicTacToeStrategy strategy) {
+ //   this.strategy = strategy;
+ // }
+  // public ComputerPlayer(String name, char cur, GameBoard gb, int gameLevel) {
+  //          super(name, 'O');
+   //         if (gameLevel == 4){
+    //              ticTacToeStrategy = new GoForWinStrategy(gb, cur);
+    //          }
+      //      else if (gameLevel == 3){
+      //            ticTacToeStrategy = new BlockWinStrategy(gb, );
+      //        }
+        //    else if (gameLevel == 2){
+        //          ticTacToeStrategy = new BestOpenMoveStrategy(board, gameMarker, playerMarker);
+       //       }
+        //    else {
+        //          ticTacToeStrategy = new RandomMoveStrategy(board, gameMarker, playerMarker);
+        //      }
+//  }
 
   private void onePlyr() {
 
