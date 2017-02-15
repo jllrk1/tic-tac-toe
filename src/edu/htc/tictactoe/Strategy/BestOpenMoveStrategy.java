@@ -23,10 +23,10 @@ public abstract class BestOpenMoveStrategy extends TicTacToeStrategy {
     public int getBestMove(){
         return getBestOpenMove();
     }
-    public int getBestOpenMove()
-    {
-        return getBestOpenMove();
-    }
+  //  public int getBestOpenMove()
+//    {
+//        return getBestOpenMove();
+ //   }
 
 
 
